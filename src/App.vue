@@ -1,54 +1,106 @@
 <template>
   <div>
-    <div>{{ number + 1}}</div>
-    
-    <div>{{ message }}</div>
-
-
-    <div>{{ window.a }}</div>
-    <div v-html="htmlstr"></div>
-    <div :newId>newId</div>
-
-    <!-- 正确的写法 -->
-    <div v-bind="arrProps">arrProps</div>
-    <!-- 错误的写法 -->
-    <div :arrProps="arrProps">arrProps</div>
-
-    <!-- js表达式 -->
-    <div>{{ word.split('').reverse().join('') }}</div>
-    <div>{{ ok ? 'Sunny': 'Rainy' }}</div>
-    <div :id="`list-${id}`">{{ id + 100}}</div>
-
-    <!-- 不允许访问的全局属性 -->
-    <div>{{ window.message }}</div>
-    <div>{{ window.Test.name }}</div>
-    <div>{{ window.location.href }}</div>
-
-    <!-- 允许访问的全局变量 -->
-    <div>{{ Math.random() }}</div>
-    <div>{{ new Date().toLocaleString() }}</div>
-    <div>{{ parseInt(100.555) }}</div>
+    <!-- <h1>{{ obj.name }}</h1>
+    <h1>{{ obj.age }}</h1>
+    <h1>{{ obj.nested.number }}</h1> -->
+    <h1 class="content">{{ name }}</h1>
   </div>
 </template>
 
 <script setup>
-const number = 1
-const ok = true
-const message = 'Hello Vue 3'
-const id = 1
-// window.a = 100
-// window.message = 'This is a global variable'
-// window.Test =  {
-//     name: 'test'
-// }
-// htmlstr
-const htmlstr = '<div style="color:red">This is a HTML string</div>'
-const newId = 10000 // vue3.4.0新增
-const arrProps = {
-  name: 'content',
-  class: 'content-page'
-}
-const word = 'vue3'
+import { ref, shallowRef, onMounted, nextTick } from 'vue'
+
+// 定义一个响应式变量
+const name = ref('Canlan')
+let content = null
+// setTimeout(async() => {
+//   name.value = 'Canlanshaw' // 修改响应式
+
+//   await nextTick() // 等待更新完成
+//   console.log("第二次打印： ",content.innerHTML) // 第二次打印： Canlanshaw
+// }, 2000)
+
+setTimeout(() => {
+  name.value = 'Canlanshaw' // 修改响应式
+
+  nextTick(()=> {
+    console.log("第二次打印： ",content.innerHTML) // 第二次打印： Canlanshaw
+  })
+}, 2000)
+
+onMounted(() => {
+  content = document.querySelector('.content')
+  console.log('第一次打印： ',content.innerHTML) // 第一次打印：  Canlan
+})
+
+// 定义一个响应式数组
+// const arr = ref([1, 2, 3, 4, 5])
+// console.log(arr.value)
+
+// setTimeout(() => {
+//   arr.value.push(6)
+//   console.log(arr.value)
+// }, 2000)
+
+// 定义一个响应式对象
+// const obj = shallowRef({
+//   name: 'Canlan2',
+//   age:18,
+//   nested: {
+//     number: 100
+//   }
+// })
+
+// console.log(obj.value.nested.number)
+
+// setTimeout(() => {
+//   // 不会触发更新
+//   obj.value.name = 'Canlanshaw2'
+//   obj.value.age = 20,
+//   obj.value.nested.number = 150
+//   obj.value.nested = {
+//     number: 200
+//   }
+//   // 会触发更新
+//   obj.value = {
+//     name: 'Canlan3',
+//     age: 21,
+//     nested: {
+//       number: 300
+//     }
+//   }
+
+//   console.log(obj.value.nested.number)
+// }, 2000)
+
+// setTimeout(() => {
+//   obj.value.nested.number = 200
+//   console.log(obj.value.nested.number)
+// },2000)
+
+// console.log(obj.value.name)
+// console.log(obj.value.age)
+
+// setTimeout(() => {
+//   obj.value.name = 'Canlanshaw2'
+//   obj.value.age += 1
+//   console.log(obj.value.name)
+//   console.log(obj.value.age)
+// }, 2000)
+
+
+// const name = ref('Canlan')
+
+// console.log(name)
+// console.log(name.value)
+
+
+// setTimeout(() => {
+//   name.value = 'Canlanshaw'
+//   console.log(name)
+//   console.log(name.value)
+// }, 2000)
+
 </script>
 
 <style lang="scss" scoped>
