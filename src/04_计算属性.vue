@@ -52,6 +52,7 @@ setTimeout(() => {
 }, 3000)
 
 setTimeout(() => {
+  console.log(displayName) // ComputedRef<"Harry 's Collections ">
   displayName.value = 'Mary Smith'
 }, 4000)
 
