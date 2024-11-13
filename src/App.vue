@@ -1,56 +1,80 @@
 <template>
   <div>
-    <h1>事件处理</h1>
-    <!-- 绑定事件 -->
-    <!-- <button @click="handleClick">点击</button> -->
-    <!-- 内联 -->
-    <!-- <button @click="count++">点击</button> -->
-    <!-- 传递参数 -->
-    <!-- <button @click="handleClick('hello vue3')">点击</button> -->
-    <!-- 必须显式的使用 $event 来向事件处理器传递事件对象 -->
-    <!-- <button @click="handleClick('message hello', $event)">点击</button> -->
-      <!-- 如果是箭头函数，那么事件对象需要作为参数传入 -->
-  <!-- 此时参数没有必须是 $event 的限制了 -->
-    <button @click="(event) => handleClick('message hello', event)">点击</button>
-    <p>点击次数: {{ count }}</p>
+    <h1>表单处理</h1>
+    <h2>input输入框</h2>
+    <!-- input -->
+    <!-- <input type="text" :value="message" @input="(e) => message = e.target.value"> -->
+    <input type="text" v-model="message">
+    <p>input的值：{{ message }}</p>
 
-    <h1>键盘事件</h1>
-    <!-- 按enter 触发 -->
-    <input type="text" :value="value" @keydown.enter="handleInput('输入了', $event)">
+    <!-- textarea -->
+    <h2>textarea</h2>
+    <textarea cols="30" rows="10" v-model="message" />
+    <p>textarea的值： {{ message }}</p>
 
+    <!-- checkbox -->
+    <h2>单个复选框</h2>
+    <label for="check">统一协议：</label>
+    <!-- <input type="checkbox" id="check"  v-model="flag" @click="flag=!flag">同意
+    <p>flag:{{ flag }}</p> -->
+    <!-- <input type="checkbox" id="check" v-model="flag" :true-value="customTrue" :false-value="customFalse"
+      @click="flag === 'yes' ? 'no': 'yes' ">同意 -->
+    <input type="checkbox" id="check" v-model="flag" :true-value="customTrue" :false-value="customFalse"
+      @click="toggle">
+    <p>flag:{{ flag }}</p>
+
+    <!-- 多个复选框 -->
+    <h2>多个复选框</h2>
+    <div class="hobby-list" v-for="(item, index) in hobbylist" :key="item.id">
+      <label for="item.id">{{ item.title }}</label>
+      <input type="checkbox" id="item.id" v-model="hobby" :value="item.value">
+    </div>
+    <p>{{ hobbies }}</p>
+
+
+    <!-- radio -->
+
+    <!-- select -->
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+const message = ref('')
+// const flag = ref(true)
+const flag = ref('yes')
 
-const count = ref(0)
-const value = ref('')
+// 自定义真假值
+const customTrue = ref('yes')
+const customFalse = ref('no')
 
-// 事件处理：事件对象
-function handleClick(msg,event) {
-  console.log(msg)
-  console.log(event)
-  console.log(event.target)
-  console.log(event.x, event.y)
-  count.value++
+function toggle() {
+  return flag === 'yes' ? 'no' : 'yes'
 }
-// 键盘事件
-function handleInput(msg, event) {
-  console.log(msg)
-  console.log(event)
-  console.log(event.target)
-  console.log(event.target.value)
-}
+// 复选框列表
+const hobby = ref([])
+// 复选数据
+const hobbylist = ref([
+  { id: 'swim', title: '游泳', value: '游个泳' },
+  { id: 'run', title: '跑步', value: '跑个步' },
+  { id: 'game', title: '游戏', value: '玩个游戏' },
+  { id: 'music', title: '音乐', value: '听个音乐' },
+  { id: 'movie', title: '电影', value: '看个电影' }
+])
 
-// 参数
-// function handleClick(msg) {
-//   console.log(msg) // hello vue3
-//   count.value++
-// }
-// function handleClick() {
-//   count.value++
-// }
+const hobbies = computed(() => {
+  if (hobby.value.length === 0) return `请选择您的爱好:`;
+  else return `您选择了${hobby.value.join('、')}`
+})
+
+
+
+const gender = ref(false)
+
+const sexlist = ref([
+  {}
+])
+
 </script>
 
 <style lang="scss" scoped></style>
