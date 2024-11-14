@@ -25,16 +25,36 @@
 
     <!-- 多个复选框 -->
     <h2>多个复选框</h2>
-    <div class="hobby-list" v-for="(item, index) in hobbylist" :key="item.id">
+    <div class="hobby-list" v-for="item in hobbylist" :key="item.id">
       <label for="item.id">{{ item.title }}</label>
       <input type="checkbox" id="item.id" v-model="hobby" :value="item.value">
     </div>
-    <p>{{ hobbies }}</p>
-
+    <p>{{ hobbiesMessage }}</p>
+    {{ hobby }}
 
     <!-- radio -->
+    <h2>单选框</h2>
+    <div class="gender-list">
+      <label for="male">男</label>
+      <input type="radio" id="male" v-model="gender" value="男">
+      <label for="female">女</label>
+      <input type="radio" id="female" v-model="gender" value="女">
+      <label for="secret">保密</label>
+      <input type="radio" id="secret" v-model="gender" value="保密">
+    </div>
 
     <!-- select -->
+    <h2>下拉选择框 单选</h2>
+    <select v-model="city1" @change="handleChange">
+      <option value="" disabled>请选择</option>
+      <option v-for="item in citylist" :key="item.key" :value="item.key">{{ item.value }}</option>
+    </select>
+
+    <h2>下拉选择框 多选</h2>
+    <select multiple v-model="city2" @change="handleChange2">
+      <option value="" disabled>请选择</option>
+      <option v-for="item in citylist"  :key="item.key" :value="item.key">{{ item.value }}</option>
+    </select>
   </div>
 </template>
 
@@ -62,18 +82,38 @@ const hobbylist = ref([
   { id: 'movie', title: '电影', value: '看个电影' }
 ])
 
-const hobbies = computed(() => {
-  if (hobby.value.length === 0) return `请选择您的爱好:`;
-  else return `您选择了${hobby.value.join('、')}`
+const hobbiesMessage = computed(() => {
+  if (hobby.value.length === 0) return `请选择您的爱好`
+  else return `你喜欢${hobby.value.join('、')}`
 })
 
+// 单选框操作
+const gender = ref('保密')
 
+setTimeout(() => {
+  gender.value = '女'
+}, 2000)
 
-const gender = ref(false)
+// 下拉选择框
+const city1 = ref('') // 单选
+const city2 = ref([]) // 多选
 
-const sexlist = ref([
-  {}
+const citylist = ref([
+  { key: '成都', value: '成都' },
+  { key: '帝都', value: '北京' },
+  { key: '魔都', value: '上海' },
+  { key: '妖都', value: '广州' },
+  { key: '陪都', value: '重庆' }
 ])
+
+function handleChange () {
+  console.log('selectChange', city1.value)
+}
+
+function handleChange2(){
+  console.log('selectChange', city2.value)
+}
+
 
 </script>
 
