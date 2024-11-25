@@ -1,33 +1,27 @@
 <template>
   <div class="app-container">
-    <h1>请对本次服务作出评分：</h1>
-    <!-- <Rating :rate @setStar="setStar" /> -->
-     <rating  :rate @changeRate="setStar" />
-    <p>你当前的评价为 {{rate}} 颗星</p>
+    <h1>组件v-model</h1>
+    <!-- 组件的v-model -->
+    <!-- <Rate v-model="rateNumber" /> -->
+    <!-- 重命名 -->
+     <!-- <Rate v-model:title="rateNumber" /> -->
+      <Rate v-model.number="rateNumber" />
+    <p>您当前的评价是：{{ rateNumber }}</p>
   </div>
 </template>
 
 <script setup>
+import Rate from './components/rating/Rate.vue';
 import {ref} from 'vue'
-import Rating from './components/rating/rating.vue';
 
-const rate = ref(0)
-
-function setStar(star) {
-  rate.value = star
-}
+const rateNumber = ref(0)
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .app-container {
-  max-width: 600px;
-  margin: auto;
-  text-align: center;
-  font-family: Arial, sans-serif;
-}
-
-p {
-  font-size: 18px;
-  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>
