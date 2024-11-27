@@ -1,27 +1,26 @@
 <template>
   <div class="app-container">
-    <h1>组件v-model</h1>
-    <!-- 组件的v-model -->
-    <!-- <Rate v-model="rateNumber" /> -->
-    <!-- 重命名 -->
-     <!-- <Rate v-model:title="rateNumber" /> -->
-      <Rate v-model.number="rateNumber" />
-    <p>您当前的评价是：{{ rateNumber }}</p>
+    <card>
+      <!-- <template v-slot:item="{item}">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.defaultText }}</p>
+      </template> -->
+      <!-- 简写+解构 -->
+      <template #item="{item}">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.defaultText }}</p>
+      </template>
+    </card>
   </div>
 </template>
 
 <script setup>
-import Rate from './components/rating/Rate.vue';
-import {ref} from 'vue'
+import Card from './components/card/Card2.vue';
 
-const rateNumber = ref(0)
 </script>
 
-<style lang="scss" scoped>
+<style>
 .app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: 20px;
 }
 </style>
