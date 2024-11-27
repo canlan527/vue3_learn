@@ -128,7 +128,7 @@ watchEffect(() => {
 window.addEventListener('hashchange', onHashChange)
 function onHashChange() {
   const route = window.location.hash.replace(/#\/?/, '')
-  if(filterFn[route]) {
+  if (filterFn[route]) {
     defaultStatus.value = route
   } else {
     window.location.hash = ''
