@@ -25,6 +25,9 @@ const router = createRouter({
     }, {
       path: 'tel',
       component: Tel,
+    }, {
+      path: '',
+      redirect: '/about/email'
     }]
   }, {
     path: '/add',
