@@ -1,13 +1,30 @@
 <template>
-  <div id="app">
-    <h1>welcome to router world</h1>
-    <nav>
-      <!-- vue-router提供的组件 -->
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
+  <div id="app" class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle Navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">用户管理系统</div>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <router-link to="/home" class="navigation">主页</router-link>
+            <router-link to="/about" class="navigation">关注我们</router-link>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <router-link to="/add" class="navigation">添加用户</router-link>
+          </ul>
+        </div>
+      </div>
     </nav>
-    <!-- 路由视图 -->
-    <router-view></router-view>
+    <!-- 由 vue-router 提供 -->
+    <!-- 路由所匹配上的组件，会渲染到这个位置 -->
+     <router-view class="content"></router-view>
   </div>
 </template>
 
@@ -15,28 +32,4 @@
 
 </script>
 
-<style lang="scss" scoped>
-#app {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-h1 {
-  color: cornflowerblue;
-}
-a {
-  text-decoration: none;
-  color: darkcyan;
-  margin-right: 4px;
-  font-size: 18px;
-  padding: 2px 4px;
-}
-a:hover {
-  background: rgba(200,200,200,0.7);
-}
-a:focus {
-  background: rgba(0,0,0,0.1);
-}
-
-</style>
+<style lang="scss" scoped></style>
