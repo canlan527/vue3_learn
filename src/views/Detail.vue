@@ -59,10 +59,13 @@ const handleDelete = async () => {
   if (window.confirm('您是否确定要删除此用户？')) {
     await deleteUser(id)
     router.push({
-      path: '/home'
+      path: '/home',
+      query:{
+        type: 'warning',
+        alert: '删除用户成功'
+      }
     })
   }
-
 }
 
 </script>

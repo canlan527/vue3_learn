@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Message v-if="alert" v-bind="alert" @close="closeAlert" />
     <h1>用户列表</h1>
     <!-- 搜索框 -->
     <input type="text" class="form-control" placeholder="搜索内容" v-model="searchValue" @input="handleSearch">
@@ -30,10 +31,15 @@
 <script setup>
 import { getUserList } from '@/api/user';
 import { ref, onMounted, computed } from 'vue'
+import {useRoute} from 'vue-router'
+import Message from '@/components/Message/Message.vue'
+
+const route = useRoute()
 
 const searchValue = ref('')
 const userList = ref([])
 const searchList = ref([])
+const alert = ref(null)
 
 // 搜索事件
 const handleSearch = () => {
@@ -43,16 +49,24 @@ const handleSearch = () => {
 }
 
 // 缓存list
-
 const list = computed(() => {
   return searchValue.value ? searchList.value : userList.value
 })
 
-
 onMounted(async () => {
   const { data } = await getUserList()
   userList.value = data
+
+  // 获取 alert
+  if(route.query && route.query.alert) {
+    alert.value = route.query
+  }
 })
+
+// 置空alert
+const closeAlert = () => {
+  alert.value = null
+}
 </script>
 
 <style lang="scss" scoped></style>

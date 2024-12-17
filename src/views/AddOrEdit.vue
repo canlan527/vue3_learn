@@ -71,15 +71,28 @@ const submit = async () => {
   if(id) {
     // 有id走修改接口
     await editUser(id, user)
+    // 路由跳转
+    router.push({
+      path: '/home',
+      query: {
+        type: 'success',
+        alert: '修改用户成功'
+      }
+    })
   } else {
     // 没有id走新增接口
     await addUser(user)
+     // 路由跳转
+     router.push({
+      path: '/home',
+      query: {
+        type: 'success',
+        alert: '添加用户成功'
+      }
+    })
   }
 
-  // 路由跳转
-  router.push({
-    path: '/home'
-  })
+  
 }
 
 onMounted(async () => {
