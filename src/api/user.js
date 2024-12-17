@@ -21,3 +21,16 @@ export function getUserById(id) {
     method: 'GET'
   })
 }
+
+/**
+ * 添加用户
+ * @param {*} data 
+ * @returns 
+ */
+export function addUser(data) {
+  return request({
+    url: '/users',
+    method: 'POST',
+    data,
+  })
+}
