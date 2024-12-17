@@ -48,3 +48,15 @@ export function editUser(id, data) {
     data,
   })
 }
+
+/**
+ * 删除用户
+ * @param {*} id 
+ * @returns 
+ */
+export function deleteUser(id) {
+  return request({
+    url: `/users/${id}`,
+    method: 'DELETE'
+  })
+}
