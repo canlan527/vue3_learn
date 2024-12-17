@@ -9,3 +9,15 @@ export function getUserList() {
     method: 'GET'
   })
 }
+
+/**
+ * 根据id来获取用户的信息
+ * @param {*} id 
+ * @returns 
+ */
+export function getUserById(id) {
+  return request({
+    url: `/users/${id}`,
+    method: 'GET'
+  })
+}

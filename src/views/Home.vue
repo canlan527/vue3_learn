@@ -37,7 +37,9 @@ const searchList = ref([])
 
 // 搜索事件
 const handleSearch = () => {
-  searchList.value = userList.value.filter((item) => item.name.includes(searchValue.value))
+  searchList.value = userList.value.filter((item) => {
+    return item.name.includes(searchValue.value) || item.penis.includes(searchValue.value)
+  })
 }
 
 // 缓存list
