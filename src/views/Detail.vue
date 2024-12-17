@@ -4,7 +4,7 @@
     <h1 class="page-header">
       {{ user.name }} -{{ user.age }}岁
       <span class="pull-right">
-        <button class="btn btn-default" style="margin-right: 10px;">修改</button>
+        <button class="btn btn-default" style="margin-right: 10px;" @click="navigateEdit">修改</button>
         <button class="btn btn-default">删除</button>
       </span>
     </h1>
@@ -40,16 +40,22 @@
 <script setup>
 import { getUserById } from '@/api/user';
 import { onMounted , reactive} from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute,useRouter } from 'vue-router';
 
 const user = reactive({})
 const id = useRoute().params.id;
+const router = useRouter()
 // 获取数据
 onMounted(async () => {
   const {data} = await getUserById(id)
   Object.assign(user, data)//赋值
 })
 
+const navigateEdit = () => {
+  router.push({
+    path: `/edit/${id}`
+  })
+}
 
 </script>
 

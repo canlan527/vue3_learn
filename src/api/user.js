@@ -34,3 +34,17 @@ export function addUser(data) {
     data,
   })
 }
+
+/**
+ * 修改用户
+ * @param {*} id 
+ * @param {*} data 
+ * @returns 
+ */
+export function editUser(id, data) {
+  return request({
+    url: `/users/${id}`,
+    method: 'PATCH',
+    data,
+  })
+}
