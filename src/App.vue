@@ -1,35 +1,33 @@
 <template>
-  <div id="app" class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle Navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <div class="navbar-brand">用户管理系统</div>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <router-link to="/home" class="navigation">主页</router-link>
-            <router-link to="/about" class="navigation">关注我们</router-link>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <router-link to="/add" class="navigation">添加用户</router-link>
-          </ul>
-        </div>
-      </div>
+  <div>
+    <nav>
+      <button @click="toggle">切换组件</button>
     </nav>
-    <!-- 由 vue-router 提供 -->
-    <!-- 路由所匹配上的组件，会渲染到这个位置 -->
-     <router-view class="content"></router-view>
+    <component :is="currentComp" />
   </div>
 </template>
 
 <script setup>
+import CompA from './components/componet/CompA.vue';
+import CompB from './components/componet/CompB.vue';
+
+import { shallowRef } from 'vue'
+
+const currentComp = shallowRef(CompA)
+const currentLabel = shallowRef('A') 
+
+const toggle = () => {
+  if(currentComp.value === CompA) {
+    currentComp.value = CompB
+    currentLabel.value = 'B'
+  }else {
+    currentComp.value = CompA
+    currentLabel.value = 'A'
+  }
+}
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>
