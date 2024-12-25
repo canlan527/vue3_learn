@@ -4,8 +4,9 @@ import { createApp } from 'vue'
 // 导入路由
 import router from '@/router'
 import App from './App.vue'
-
+import { createPinia } from 'pinia'
 const app = createApp(App)
+const pinia = createPinia()
 
 app.config.globalProperties = {
   window: {
@@ -19,6 +20,7 @@ app.config.globalProperties = {
   }
 }
 
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')
