@@ -1,29 +1,19 @@
 <template>
-  <div class="form-container">
-    <el-form 
-      :model="form" 
-      label-width="100px" 
-      class="user-form"
-      ref="formRef"
-      :rules="rules"
-    >
-      <h1>用户信息表单</h1>
-      <!-- 姓名 -->
-      <el-form-item label="姓名" prop="name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <!-- 邮箱 -->
-       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="form.email"></el-input>
-       </el-form-item>
-       <!-- 出生日期 -->
+  <ElConfigProvider :locale="zhCn">
+    <div class="form-container">
+      <el-form :model="form" label-width="100px" class="user-form" ref="formRef" :rules="rules">
+        <h1>用户信息表单</h1>
+        <!-- 姓名 -->
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <!-- 邮箱 -->
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="form.email"></el-input>
+        </el-form-item>
+        <!-- 出生日期 -->
         <el-form-item label="出生日期" prop="birthday">
-          <el-date-picker 
-            v-model="form.birthday"
-            type="date"
-            placeholder="选择日期"
-            style="width: 100%"
-          />
+          <el-date-picker v-model="form.birthday" type="date" placeholder="选择日期" style="width: 100%" />
         </el-form-item>
         <!-- 性别 -->
         <el-form-item label="性别" prop="gender">
@@ -51,16 +41,20 @@
           <el-rate v-model="form.rating"></el-rate>
         </el-form-item>
         <!-- 提交按钮 -->
-        <el-form-item >
+        <el-form-item>
           <el-button type="primary" @click="submitForm">提交</el-button>
           <el-button @click="resetForm">重置</el-button>
         </el-form-item>
-    </el-form>
-  </div>
+      </el-form>
+    </div>
+  </ElConfigProvider>
+
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 // 绑定表单数据
 const form = ref({
@@ -95,9 +89,9 @@ const rules = {
 // 表单提交方法
 const submitForm = () => {
   formRef.value.validate((valid) => {
-    if(valid) {
+    if (valid) {
       console.log('表单验证通过')
-    }else {
+    } else {
       console.log('表单验证不通过')
       return false;
     }
