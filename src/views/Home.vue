@@ -1,45 +1,40 @@
 <template>
   <div>
-    <Message v-if="alert" v-bind="alert" @close="closeAlert" />
     <h1>用户列表</h1>
     <!-- 搜索框 -->
-    <input type="text" class="form-control" placeholder="搜索内容" v-model="searchValue" @input="handleSearch">
+    <el-input 
+      placeholder="搜索内容" 
+      size="large" 
+      v-model="searchValue" 
+      @input="handleSearch" 
+      :prefix-icon="Search"
+      clearable />
+    <div style="margin: 20px 0" />
     <!-- 用户列表 -->
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>姓名</th>
-          <th>年龄</th>
-          <th>联系方式</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in list" :key="item.id">
-          <td>{{ item.name }}</td>
-          <td>{{ item.age }}</td>
-          <td>{{ item.phone }}</td>
-          <td>
-            <router-link :to="`/detail/${item.id}`">详情</router-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <el-table :data="list" stripe>
+      <el-table-column prop="name" label="姓名"></el-table-column>
+      <el-table-column prop="age" label="年龄"></el-table-column>
+      <el-table-column prop="phone" label="电话"></el-table-column>
+      <el-table-column label="操作" width="180">
+        <template #default="scope">
+          <!-- {{ scope.row.date }} -->
+          <router-link :to="`/detail/${scope.row.id}`">
+            <el-button type="primary">详情</el-button>
+          </router-link>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script setup>
 import { getUserList } from '@/api/user';
 import { ref, onMounted, computed } from 'vue'
-import {useRoute} from 'vue-router'
-import Message from '@/components/Message/Message.vue'
-
-const route = useRoute()
+import { Search } from '@element-plus/icons-vue'
 
 const searchValue = ref('')
 const userList = ref([])
 const searchList = ref([])
-const alert = ref(null)
 
 // 搜索事件
 const handleSearch = () => {
@@ -56,17 +51,7 @@ const list = computed(() => {
 onMounted(async () => {
   const { data } = await getUserList()
   userList.value = data
-
-  // 获取 alert
-  if(route.query && route.query.alert) {
-    alert.value = route.query
-  }
 })
-
-// 置空alert
-const closeAlert = () => {
-  alert.value = null
-}
 </script>
 
 <style lang="scss" scoped></style>
