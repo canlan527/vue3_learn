@@ -4,6 +4,9 @@ import { createApp } from 'vue'
 // import ElementPlus from 'element-plus'
 // import 'element-plus/dist/index.css'
 // import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
+import './deepVue/数据拦截'
+
 // 导入路由
 import router from '@/router'
 import App from './App.vue'
