@@ -6,7 +6,7 @@ import { createApp } from 'vue'
 // import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 // import './deepVue/数据拦截'
-import './deepVue/响应式数据'
+import './deepVue/02_响应式数据'
 
 // 导入路由
 import router from '@/router'
