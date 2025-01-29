@@ -15,9 +15,6 @@
               <el-menu-item index="about">
                 <router-link to="/about" class="navigation">关于我们</router-link>
               </el-menu-item>
-              <el-menu-item index="todoreactive">
-                <router-link to="/todoreactive" class="navigation">todoReactive</router-link>
-              </el-menu-item>
             </el-menu>
           </el-col>
           <el-col :span="2">

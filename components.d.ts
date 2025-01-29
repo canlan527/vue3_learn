@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddTodo: typeof import('./src/components/todoReactive/AddTodo.vue')['default']
     Card: typeof import('./src/components/card/Card.vue')['default']
     Card2: typeof import('./src/components/card/Card2.vue')['default']
     CheckboxList: typeof import('./src/components/keepalive/CheckboxList.vue')['default']
@@ -71,6 +72,7 @@ declare module 'vue' {
     TaskList: typeof import('./src/components/Task/TaskList.vue')['default']
     TextInput: typeof import('./src/components/keepalive/TextInput.vue')['default']
     Timer: typeof import('./src/components/keepalive/Timer.vue')['default']
+    Todolist: typeof import('./src/components/todoReactive/Todolist.vue')['default']
     UserCard: typeof import('./src/components/user/UserCard.vue')['default']
   }
 }

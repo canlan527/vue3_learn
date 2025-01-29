@@ -6,6 +6,7 @@ import AddOrEdit from '@/views/AddOrEdit.vue'
 import Detail from '@/views/Detail.vue'
 import Tel from '@/views/Tel.vue'
 import Email from '@/views/Email.vue'
+import TodoReactive from '@/views/TodoReactive.vue'
 
 // 创建路由实例，并传入配置对象
 const router = createRouter({
@@ -41,7 +42,11 @@ const router = createRouter({
   }, {
     path: '/detail/:id',
     component: Detail
-  }]
+  },{
+    path: '/todoreactive',
+    component:TodoReactive
+  }
+]
 })
 
 export default router
