@@ -43,7 +43,7 @@ function validate(target, ...types) {
     apply(target, thisBinding, args) {
       types.forEach((type, index) => {
         if(typeof args[index] !== type ) {
-          throw new Error(`第${index+1}参数 ${args[index]} 的类型应该为${type}`)
+          throw new TypeError(`第${index+1}参数 ${args[index]} 的类型应该为${type}`)
         }
       })
       return Reflect.apply(target, thisBinding, args)
@@ -51,6 +51,18 @@ function validate(target, ...types) {
   })
   return proxy
 }
+// 高阶函数实现参数验证
+function validate2(fn, ...types) {
+  return (...args) => {
+    types.forEach((type, index) => {
+      if(typeof args[index] !== type) {
+        throw new TypeError(`第${index+1}项参数 ${args[index]} 的类型应该为 ${type}`)
+      }
+    })
+    return fn(...args)
+  }
+}
 
-const sumProxy = validate(sum, 'number', 'number')
-console.log(sumProxy(1, '12'))
+
+const sumProxy = validate2(sum, 'number', 'number')
+console.log(sumProxy(1, 2))
