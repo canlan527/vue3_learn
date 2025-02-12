@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import Inspect from 'vite-plugin-inspect'
 
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -15,6 +16,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
+    Inspect(),
     AutoImport({
       imports: ['vue'],
       resolvers: [
