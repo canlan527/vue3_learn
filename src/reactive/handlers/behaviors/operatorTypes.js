@@ -11,3 +11,6 @@ export const TriggerOpTypes = {
   ADD: 'add',
   DELETE: 'delete'
 }
+
+// symbol 类型作为不会重复的特殊标识key
+export const RAW = Symbol('raw')
