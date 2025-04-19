@@ -1,5 +1,6 @@
 // 用于测试
 // import { RAW } from "./handlers/behaviors/operatorTypes.js";
+import { effect } from "./effect/effect.js";
 import { reactive } from "./reactive.js";
 
 const obj = {
@@ -70,6 +71,68 @@ const proxyArr = reactive(arr)
 // 当新值小于旧值，需要做删除操作
 // proxyArr.length = 1
 
-proxyArr.push(10)
+// proxyArr.push(10)
 
-console.log(proxyArr)
+// console.log(proxyArr)
+
+const proxyObj = reactive(obj)
+
+
+
+// lazy 的effect 自己控制执行时间
+// const obj2 = {
+//   a: 1,
+//   b: 2,
+// };
+// const state = reactive(obj2);
+// function fn() {
+//   console.log("fn");
+//   state.a = state.a + 1;
+// }
+// const effectFn = effect(fn, {
+//   lazy: true,
+// });
+// state.a = 100;
+// effectFn(); // 只有在执行了这个函数之后，才会建立依赖关系
+
+// const obj2 = {
+//   a: 1,
+//   b: 2,
+// };
+// const state = reactive(obj2);
+// function fn() {
+//   console.log(state.a);
+//   state.a = state.a + 1;
+// }
+// let isRun = false;
+// const effectFn = effect(fn, {
+//   lazy: true,
+//   scheduler: (eff) => {
+//     // 由我用户来决定如何处理依赖的函数
+//     Promise.resolve().then(() => {
+//       if (!isRun) {
+//         isRun = true;
+//         eff();
+//       }
+//     });
+//   },
+// });
+// effectFn(); // 只有在执行了这个函数之后，才会建立依赖关系
+// state.a++;
+// state.a++;
+// state.a++;
+// state.a++;
+// state.a++;
+// console.log('结束了')
+// 测试 1
+// const obj2 = {
+//   a: 1,
+//   b: 2,
+// };
+// const state = reactive(obj2);
+// function fn() {
+//   console.log("fn");
+//   state.a = state.a + 1;
+// }
+// effect(fn);
+// state.a = 100;

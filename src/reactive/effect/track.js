@@ -1,6 +1,6 @@
 // 收集依赖
-
-import { TrackOpTypes } from "../handlers/behaviors/operatorTypes.js"
+import { targetMap, activeEffect } from "./effect.js";
+import { TrackOpTypes, ITERATE_KEY } from "../handlers/behaviors/operatorTypes.js"
 
 let shouldTrack = true; // 是否收集依赖
 // 暂停依赖收集
@@ -18,18 +18,37 @@ export function resumeTracking() {
  * @param {string} type 进行的操作类型
  * @param {*} key 收集的属性
  */
-export default function(target, type, key) {
+export default function (target, type, key) {
   // 如果不需要收集依赖就直接返回
-  if(!shouldTrack) {
+  if (!shouldTrack || !activeEffect) {
     return;
+  }
+  // 建立关系
+  // targetMap -> propMap -> typeMap -> depsMap ->Set<effectFn>
+  let propMap = targetMap.get(target)
+  if (!propMap) {
+    targetMap.set(target, propMap = new Map())
   }
 
-  // console.log(`当前的type值是${type}`)
-  if(type === TrackOpTypes.ITERATE) {
-    // console.log('收集器：原始对象为', target)
-    console.log(`收集器：代理对象的${type}操作被拦截`)
-    return;
+  // 如果是遍历所有的属性，key会是undefined，所以对key值做参数归一化
+  if (type === TrackOpTypes.ITERATE) {
+    key = ITERATE_KEY
   }
-  // console.log('收集器：原始对象为', target)
-  console.log(`收集器：代理对象${String(key)}属性的${type}操作被拦截`)
+
+  let typeMap = propMap.get(key)
+  if (!typeMap) {
+    propMap.set(key, typeMap = new Map())
+  }
+
+  let depsMap = typeMap.get(type)
+  if (!depsMap) {
+    typeMap.set(type, depsMap = new Set())
+  }
+  if (!depsMap.has(activeEffect)) {
+    // 向字段添加副作用函数
+    depsMap.add(activeEffect)
+    // 收集依赖集合
+    activeEffect.deps.push(depsMap)
+  }
+
 }

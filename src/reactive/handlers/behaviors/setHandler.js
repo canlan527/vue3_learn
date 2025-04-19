@@ -22,7 +22,7 @@ export default function (target, key, value) {
     if (Array.isArray(target) && hasChange(oldLen, target.length)) {
       if (key !== 'length') {
         // 隐式变化，派发更新
-        trigger(target, type, 'length')
+        trigger(target, TriggerOpTypes.SET, 'length')
       } else {
         // length显示变化，删除操作
         for(let i = target.length; i< oldLen; i++) {
