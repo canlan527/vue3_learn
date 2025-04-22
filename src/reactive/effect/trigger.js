@@ -46,29 +46,24 @@ export default function (target, type, key) {
 // 输出：一个 Set 集合，包含所有需要触发的副作用函数。
 
 function getEffects(target, type, key) {
-    // targetMap -> propMap -> typeMap -> deps = Set[effectFn]
-    const propMap = targetMap.get(target)
-    if(!propMap) return;
-    // 如果是新增、删除会涉及到额外触发迭代
-    const keys = [key]
-    if(type === TriggerOpTypes.ADD || type === TriggerOpTypes.DELETE) {
-      keys.push(ITERATE_KEY)
-    }
-    const effectsFns = new Set()
+  const propMap = targetMap.get(target)
+  if(!propMap) return target[key];
 
-    for(const key of keys) {
-      const typeMap = propMap.get(key)
-      if(!typeMap) continue;
-      const trackTypes = triggerTypeMap[type]
-      // console.log(trackTypes)
-      for(const trackType of trackTypes) {
-        const deps = typeMap.get(trackType)
-        // console.log('deps: ',deps)      
-        if(!deps) continue;
-        for(const effectFn of deps) {
-          effectsFns.add(effectFn)
-        }
-      }
+  const keys = [key]
+  if(type === TriggerOpTypes.ADD || TriggerOpTypes.DELETE) {
+    keys.push(ITERATE_KEY)
+  }
+
+  const effectFns = new Set()
+  for(const key of keys) {
+    const typeMap = propMap.get(key)
+    if(!typeMap) continue;
+    const trackTypes = triggerTypeMap[type]
+    for(const trackType of trackTypes) {
+      const deps = typeMap.get(trackType)
+      if(!deps) continue;
+      deps.forEach(effectFn => effectFns.add(effectFn))
     }
-    return effectsFns
+  }
+  return effectFns
 }
