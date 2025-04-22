@@ -2,7 +2,7 @@
 // import { RAW } from "./handlers/behaviors/operatorTypes.js";
 import { effect } from "./effect/effect.js";
 import { reactive } from "./reactive.js";
-
+import { computed } from "./computed.js";
 // const obj = {
 //   a: 1,
 //   b: 2,
@@ -138,17 +138,17 @@ import { reactive } from "./reactive.js";
 // state.a = 100;
 
 
-const data = {foo: 1, bar: 2}
-const proxy = reactive(data)
-effect(() => {
-  // console.log(proxy.foo)
-  // console.log('foo' in proxy) // true
-  for(const prop in proxy) {
-    console.log(prop, proxy[prop])
-  }
-  console.log('--------')
+// const data = {foo: 1, bar: 2}
+// const proxy = reactive(data)
+// effect(() => {
+//   // console.log(proxy.foo)
+//   // console.log('foo' in proxy) // true
+//   for(const prop in proxy) {
+//     console.log(prop, proxy[prop])
+//   }
+//   console.log('--------')
 
-})
+// })
 
 // proxy.foo++
 // proxy.bar++
@@ -157,5 +157,23 @@ effect(() => {
 // proxy.baz  = 3 // 新增
 // ['get', 'iterate', 'has']
 
-delete proxy.bar // 删除
+// delete proxy.bar // 删除
 
+// computed
+const data = {foo: 1, bar: 2}
+const proxy = reactive(data)
+const res = computed(() => {
+  console.log('计算属性计算了')
+  return proxy.foo+ proxy.bar
+})
+
+
+
+// 重复触发
+// console.log(res.value)
+console.log(res.value)
+console.log(res.value)
+
+// 修改响应式，重新执行effectFn
+proxy.foo++
+console.log(res.value)

@@ -47,7 +47,7 @@ export default function (target, type, key) {
 
 function getEffects(target, type, key) {
   const propMap = targetMap.get(target)
-  if(!propMap) return target[key];
+  if(!propMap) return;
 
   const keys = [key]
   if([TriggerOpTypes.ADD, TriggerOpTypes.DELETE].includes(type)) {
