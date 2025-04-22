@@ -3,14 +3,14 @@
 import { effect } from "./effect/effect.js";
 import { reactive } from "./reactive.js";
 
-const obj = {
-  a: 1,
-  b: 2,
-  c: {
-    name: 'sam',
-    age:30
-  }
-}
+// const obj = {
+//   a: 1,
+//   b: 2,
+//   c: {
+//     name: 'sam',
+//     age:30
+//   }
+// }
 
 // const proxyObj = reactive(obj)
 
@@ -29,8 +29,8 @@ const obj = {
 // }
 
 // 测试数组
-const arr = [1 , obj, 3]
-const proxyArr = reactive(arr)
+// const arr = [1 , obj, 3]
+// const proxyArr = reactive(arr)
 
 // 测试读取行为
 // proxyArr[0]
@@ -75,7 +75,7 @@ const proxyArr = reactive(arr)
 
 // console.log(proxyArr)
 
-const proxyObj = reactive(obj)
+// const proxyObj = reactive(obj)
 
 
 
@@ -136,3 +136,23 @@ const proxyObj = reactive(obj)
 // }
 // effect(fn);
 // state.a = 100;
+
+
+const data = {foo: 1, bar: 2}
+const proxy = reactive(data)
+effect(() => {
+  // console.log(proxy.foo)
+  // console.log('foo' in proxy) // true
+  for(const prop in proxy) {
+    console.log(prop, proxy[prop])
+  }
+  console.log('--------')
+
+})
+
+// proxy.foo++
+// proxy.bar++
+// in
+// 'foo' in proxy
+proxy.baz  = 3 // 新增
+// ['get', 'iterate', 'has']

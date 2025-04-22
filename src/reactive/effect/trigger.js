@@ -23,22 +23,30 @@ const triggerTypeMap = {
  * @param {*} key 操作的属性
  */
 export default function (target, type, key) {
-  // console.log('trigger', target[key])
   // 取出副作用函数并执行
   const effects = getEffects(target, type, key)
   if(!effects) return;
-  for(const effectFn of effects) {
-    if(effectFn === activeEffect) continue;
+  const effectsToRun = new Set()
+  effects.forEach(effectFn => {
+    if(effectFn !== activeEffect) {
+      effectsToRun.add(effectFn)
+    }
+  }) 
+
+  effectsToRun.forEach(effectFn => {
     if(effectFn?.options?.scheduler) {
       effectFn.options.scheduler(effectFn)
     } else {
       effectFn()
     }
-  }
+  })
 }
+// getEffects:
+// 输入：target（目标对象）、type（触发类型，如 SET、ADD）、key（操作的属性）。
+// 输出：一个 Set 集合，包含所有需要触发的副作用函数。
 
 function getEffects(target, type, key) {
-    // targetMap -> propMap -> typeMap -> depsMap -> Set[effectFn]
+    // targetMap -> propMap -> typeMap -> deps = Set[effectFn]
     const propMap = targetMap.get(target)
     if(!propMap) return;
     // 如果是新增、删除会涉及到额外触发迭代
@@ -52,10 +60,12 @@ function getEffects(target, type, key) {
       const typeMap = propMap.get(key)
       if(!typeMap) continue;
       const trackTypes = triggerTypeMap[type]
+      // console.log(trackTypes)
       for(const trackType of trackTypes) {
-        const depsMap = typeMap.get(trackType)
-        if(!depsMap) continue;
-        for(const effectFn of depsMap) {
+        const deps = typeMap.get(trackType)
+        // console.log('deps: ',deps)      
+        if(!deps) continue;
+        for(const effectFn of deps) {
           effectsFns.add(effectFn)
         }
       }

@@ -8,7 +8,7 @@ const arrayInstrumentations = {};
 ['includes', 'indexOf', 'lastIndexOf'].forEach((key) => {
   // console.log(key)
   arrayInstrumentations[key] = function(...args) {
-    console.log(this)
+    // console.log(this)
     const res = Array.prototype[key].apply(this, args)
     if(res === false || res < 0) {
       // this[RAW]触发暗门，proxy会拦截，并返回原始对象
