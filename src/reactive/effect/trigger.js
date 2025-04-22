@@ -50,7 +50,7 @@ function getEffects(target, type, key) {
   if(!propMap) return target[key];
 
   const keys = [key]
-  if(type === TriggerOpTypes.ADD || TriggerOpTypes.DELETE) {
+  if([TriggerOpTypes.ADD, TriggerOpTypes.DELETE].includes(type)) {
     keys.push(ITERATE_KEY)
   }
 

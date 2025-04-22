@@ -154,5 +154,8 @@ effect(() => {
 // proxy.bar++
 // in
 // 'foo' in proxy
-proxy.baz  = 3 // 新增
+// proxy.baz  = 3 // 新增
 // ['get', 'iterate', 'has']
+
+delete proxy.bar // 删除
+
