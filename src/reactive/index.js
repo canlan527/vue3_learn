@@ -3,6 +3,7 @@
 import { effect } from "./effect/effect.js";
 import { reactive } from "./reactive.js";
 import { computed } from "./computed.js";
+import { watch } from "./watch.js";
 // const obj = {
 //   a: 1,
 //   b: 2,
@@ -160,20 +161,38 @@ import { computed } from "./computed.js";
 // delete proxy.bar // 删除
 
 // computed
+// const data = {foo: 1, bar: 2}
+// const proxy = reactive(data)
+// const res = computed(() => {
+//   console.log('计算属性计算了')
+//   return proxy.foo+ proxy.bar
+// })
+
+
+
+// // 重复触发
+// // console.log(res.value)
+// console.log(res.value)
+// console.log(res.value)
+
+// // 修改响应式，重新执行effectFn
+// proxy.foo++
+// console.log(res.value)
+
+// watch
 const data = {foo: 1, bar: 2}
 const proxy = reactive(data)
-const res = computed(() => {
-  console.log('计算属性计算了')
-  return proxy.foo+ proxy.bar
+
+watch(() => proxy.foo, (newVal, oldVal)=> {
+  console.log('effectFn run~')
+  console.log(newVal, oldVal)
+}, {
+  // immediate: true,
+  flush: 'post'
 })
 
 
-
-// 重复触发
-// console.log(res.value)
-console.log(res.value)
-console.log(res.value)
-
-// 修改响应式，重新执行effectFn
 proxy.foo++
-console.log(res.value)
+proxy.foo++
+proxy.foo++
+// 
