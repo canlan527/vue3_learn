@@ -9,18 +9,15 @@
           </el-col>
           <el-col :span="16">
             <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
-              <li v-for="(item, index) in routerInfo" :key="item.to">
-                <el-menu-item :index="item.name">
-                  <router-link :to="item.to" class="navigation">{{ item.title }}</router-link>
-                </el-menu-item>
-              </li>
-
-              <!-- <el-menu-item index="about">
+              <el-menu-item index="home">
+                <router-link to="/home" class="navigation">主页</router-link>
+              </el-menu-item>
+              <el-menu-item index="about">
                 <router-link to="/about" class="navigation">关于我们</router-link>
               </el-menu-item>
               <el-menu-item index="todoreactive">
                 <router-link to="/todoreactive" class="navigation">todoReactive</router-link>
-              </el-menu-item> -->
+              </el-menu-item>
             </el-menu>
           </el-col>
           <el-col :span="2">
@@ -45,12 +42,7 @@
 import { ref } from 'vue'
 
 const activeIndex = ref('home')
-const routerInfo = ref([
-  { to: '/home', name: 'home', title: '主页' },
-  { to: '/about', name: 'about', title: '关于我们' },
-  { to: '/todoreactive', name: 'todo', title: 'todoReactive' },
-  { to: '/plugin', name: 'plugin', title: '插件展示' },
-])
+
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath)
 }

@@ -13,6 +13,7 @@ import './deepVue/04_观察者模式1'
 import router from '@/router'
 import App from './App.vue'
 import { createPinia } from 'pinia'
+import ErrorLogger from './views/errorLogger/error-logger'
 const app = createApp(App)
 const pinia = createPinia()
 
@@ -36,6 +37,11 @@ app.config.globalProperties = {
 app.use(pinia)
 app.use(router)
 // app.use(ElementPlus)
-
+//使用插件
+app.use(ErrorLogger, {
+  logToConsole: true,
+  remoteLogging: true,
+  remoteUrl: 'http://localhost:3003/log'
+})
 app.mount('#app')
 

@@ -7,15 +7,16 @@ import Detail from '@/views/Detail.vue'
 import Tel from '@/views/Tel.vue'
 import Email from '@/views/Email.vue'
 import TodoReactive from '@/views/TodoReactive.vue'
+import Plugin from '@/views/errorLogger/showPlugin.vue'
 
 // 创建路由实例，并传入配置对象
 const router = createRouter({
   history: createWebHistory(), // 指定 history 模式
   // 路由和组件的映射
   routes: [{
-    path:'/',
+    path: '/',
     redirect: '/home'
-  },{
+  }, {
     path: '/home', //指定路由路径
     name: 'Home', //指定路由名称
     component: Home, //指定路由组件
@@ -42,11 +43,14 @@ const router = createRouter({
   }, {
     path: '/detail/:id',
     component: Detail
-  },{
+  }, {
     path: '/todoreactive',
-    component:TodoReactive
+    component: TodoReactive
+  }, {
+    path: '/plugin',
+    component: Plugin
   }
-]
+  ]
 })
 
 export default router
