@@ -8,6 +8,7 @@ import Tel from '@/views/Tel.vue'
 import Email from '@/views/Email.vue'
 import TodoReactive from '@/views/TodoReactive.vue'
 import Plugin from '@/views/errorLogger/showPlugin.vue'
+import TransitionPic from '@/views/transitionPic/TransitionPic.vue'
 
 // 创建路由实例，并传入配置对象
 const router = createRouter({
@@ -49,6 +50,9 @@ const router = createRouter({
   }, {
     path: '/plugin',
     component: Plugin
+  }, {
+    path: '/transition-pic',
+    component: TransitionPic
   }
   ]
 })
