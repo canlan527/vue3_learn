@@ -1,5 +1,6 @@
+
 <template>
-  <div class="tree-node" v-for="(node, index) in data" :key="node.label">
+  <div class="tree-node" v-for="(node, index) in treeData" :key="node.label">
     <div class="node-label">
       <!-- 折叠/展开按钮 -->
       <button class="toggle-button" v-if="hasChildren(node)" @click="isOpenArr[index] = !isOpenArr[index]">
@@ -12,47 +13,84 @@
     </div>
     <!-- 要渲染子树，递归使用组件 -->
     <div v-show="isOpenArr[index]">
-      <Tree v-if="node.children" :data="node.children" :has-checkbox="hasCheckbox" :parent-node="node" />
+      <Tree v-if="node.children" :data="node.children" :has-checkbox="hasCheckbox" @update:data="handleChildUpdate(node, $event)" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+
 const props = defineProps({
   data: {
     type: Array,
-    required: true
+    required: true,
+    default: () => []
   },
   hasCheckbox: {
     type: Boolean,
     required: true
-  },
-  parentNode: {
-    type: Object,
-    default: null
   }
 })
-// 采用依赖注入的方式向下一级提供父节点
-// const parentNode = inject('parentNode', null)
 
-// onMounted(() => {
-//   props.data.forEach((node) => {
-//     provide('parentNode', node)
-//   })
-// })
+const emit = defineEmits(['update:data'])
 
+const treeData = ref([])
+const isOpenArr = ref([])
 
+// 深拷贝数据并添加 parentNode 属性
+function cloneAndAttachParents(nodes, parent = null) {
+  if (!Array.isArray(nodes)) {
+    console.warn('Invalid nodes data, expected an array:', nodes)
+    return []
+  }
+  return nodes.map((node) => {
+    if (!node || typeof node !== 'object') {
+      console.warn('Invalid node:', node)
+      return { label: 'Unnamed Node', checked: false, children: [] }
+    }
+    const newNode = {
+      label: node.label || 'Unnamed Node',
+      checked: node.checked ?? false,
+      parentNode: parent
+    }
+    newNode.children = node.children ? cloneAndAttachParents(node.children, newNode) : []
+    return newNode
+  })
+}
 
-// 每一层通过状态来控制面板是折叠还是展开
-const isOpenArr = ref(props.data.map(() => false))
+// 初始化 treeData
+function initTreeData() {
+  const oldIsOpenArr = [...isOpenArr.value] // 保存旧的折叠状态
+  treeData.value = cloneAndAttachParents(props.data || [])
+  isOpenArr.value = Array(treeData.value.length).fill(false) // 初始化新数组
+  // 恢复旧的折叠状态，长度不足的部分补 false
+  for (let i = 0; i < Math.min(oldIsOpenArr.length, isOpenArr.value.length); i++) {
+    isOpenArr.value[i] = oldIsOpenArr[i]
+  }
+}
+
+onMounted(() => {
+  initTreeData()
+})
+
+// 监听 props.data 变化
+watch(
+  () => props.data,
+  () => {
+    initTreeData()
+  },
+  { deep: true }
+)
+
 // 判断是否有子节点
 const hasChildren = (node) => {
   return node.children && node.children.length > 0
 }
 
+// 处理复选框变化
 function handleChange(node) {
-  // console.log(node.checked)
+  console.log('handleChange triggered for:', node.label)
   // 更新子节点
   const updateChildCheck = (node, checked) => {
     node.checked = checked
@@ -67,35 +105,43 @@ function handleChange(node) {
   // 更新父节点
   const updateParentCheck = (node) => {
     const parentNode = node.parentNode
-    if (!parentNode) return;
-    const allNodeChecked = parentNode.children?.every(node => node.checked)
-    if (allNodeChecked && !parentNode.checked) { // 如果所有子节点都勾选上了
-      // 如果父组件没有勾选就勾选上，并递归向上传递更新状态
-      parentNode.checked = true;
+    if (!parentNode) return
+    const allNodeChecked = parentNode.children.every((child) => child.checked)
+    if (allNodeChecked && !parentNode.checked) {
+      parentNode.checked = true
       updateParentCheck(parentNode)
-    } else if (!allNodeChecked && parentNode.checked) { // 如果不是所有子节点都勾选的情况
-      // 如果父组件处于勾选状态就取消勾选，并向上传递更新状态
+    } else if (!allNodeChecked && parentNode.checked) {
       parentNode.checked = false
       updateParentCheck(parentNode)
     }
   }
-
   updateParentCheck(node)
+
+  // 触发 update:data 事件
+  emit('update:data', treeData.value)
 }
 
-// 构造数据结构，给data的每个节点加上parentNode属性
-const addParentRefs = (nodes, parent = null) => {
-  nodes.forEach(node => {
-    node.parentNode = parent
-    if (node.children) {
-      addParentRefs(node.children, node)
+// 处理子组件的 update:data 事件
+function handleChildUpdate(parentNode, updatedChildren) {
+  console.log('handleChildUpdate triggered for:', parentNode.label)
+  parentNode.children = updatedChildren
+  // 更新父节点状态
+  const allNodeChecked = parentNode.children.every((child) => child.checked)
+  parentNode.checked = allNodeChecked
+  // 递归更新父节点的父节点
+  if (parentNode.parentNode) {
+    const updateParentCheck = (node) => {
+      const parent = node.parentNode
+      if (!parent) return
+      const allChecked = parent.children.every((child) => child.checked)
+      parent.checked = allChecked
+      updateParentCheck(parent)
     }
-  })
+    updateParentCheck(parentNode)
+  }
+  // 触发 update:data 事件
+  emit('update:data', treeData.value)
 }
-
-onMounted(() => {
-  addParentRefs(props.data)
-})
 </script>
 
 <style lang="scss" scoped>
