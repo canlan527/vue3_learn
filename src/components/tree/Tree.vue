@@ -1,4 +1,3 @@
-
 <template>
   <div class="tree-node" v-for="(node, index) in treeData" :key="node.label">
     <div class="node-label">
@@ -12,9 +11,22 @@
       <label :for="node.label">{{ node.label }}</label>
     </div>
     <!-- 要渲染子树，递归使用组件 -->
-    <div v-show="isOpenArr[index]">
-      <Tree v-if="node.children" :data="node.children" :has-checkbox="hasCheckbox" @update:data="handleChildUpdate(node, $event)" />
+    <div v-if="transition">
+      <Transition name="expand" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter"
+        @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
+        <div v-show="isOpenArr[index]">
+          <Tree v-if="node.children" :data="node.children" :has-checkbox="hasCheckbox"
+            @update:data="handleChildUpdate(node, $event)" />
+        </div>
+      </Transition>
     </div>
+    <div v-else>
+      <div v-show="isOpenArr[index]">
+        <Tree v-if="node.children" :data="node.children" :has-checkbox="hasCheckbox"
+          @update:data="handleChildUpdate(node, $event)" />
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -30,6 +42,10 @@ const props = defineProps({
   hasCheckbox: {
     type: Boolean,
     required: true
+  },
+  transition: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -141,6 +157,39 @@ function handleChildUpdate(parentNode, updatedChildren) {
   }
   // 触发 update:data 事件
   emit('update:data', treeData.value)
+}
+
+// 过渡动画相关的方法
+function beforeEnter(el) {
+  el.style.maxHeight = '0'
+  el.style.opacity = '0'
+  el.style.overflow = 'hidden'
+}
+
+function enter(el) {
+  el.style.transition = 'max-height 0.3s ease, opacity 0.3s ease'
+  el.style.maxHeight = el.scrollHeight + 'px'
+  el.style.opacity = '1'
+}
+
+function afterEnter(el) {
+  el.style.maxHeight = 'none'
+}
+
+function beforeLeave(el) {
+  el.style.maxHeight = el.scrollHeight + 'px'
+  el.style.opacity = '1'
+  el.style.overflow = 'hidden'
+}
+
+function leave(el) {
+  el.style.transition = 'max-height 0.3s ease, opacity 0.3s ease'
+  el.style.maxHeight = '0'
+  el.style.opacity = '0'
+}
+
+function afterLeave(el) {
+  el.style.maxHeight = 'none'
 }
 </script>
 
