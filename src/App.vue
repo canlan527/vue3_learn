@@ -9,11 +9,10 @@
           </el-col>
           <el-col :span="16">
             <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
-              <li v-for="(item, index) in routerInfo" :key="item.to">
-                <el-menu-item :index="item.name">
-                  <router-link :to="item.to" class="navigation">{{ item.title }}</router-link>
+                <el-menu-item :index="item.to" 
+                v-for="(item, index) in routerInfo" :key="item.to">
+                  {{ item.title }}
                 </el-menu-item>
-              </li>
             </el-menu>
           </el-col>
           <el-col :span="2">
@@ -35,19 +34,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
-const activeIndex = ref('home')
+// const activeIndex = ref('home')
 const routerInfo = ref([
   { to: '/home', name: 'home', title: '主页' },
   { to: '/about', name: 'about', title: '关于我们' },
-  { to: '/todoreactive', name: 'todo', title: 'todoReactive' },
+  { to: '/todoreactive', name: 'todoreactive', title: 'todoReactive' },
   { to: '/plugin', name: 'plugin', title: '插件展示' },
-  { to: '/transition-pic', name: 'transition-pic', title: '图片轮播' }
+  { to: '/transition-pic', name: 'transition-pic', title: '图片轮播' },
+  { to: '/tree', name:'tree', title: 'tree组件' }
 ])
+const router = useRouter()
+const route = useRoute()
+// 让 activeIndex 永远等于当前路由 path
+const activeIndex = computed(() => route.path)
+
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath)
+  router.push(key)
 }
+onMounted(() => {
+  console.log(route.path) // 输出 /
+})
+
 
 </script>
 
