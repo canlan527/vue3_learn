@@ -73,6 +73,7 @@ declare module 'vue' {
     TextInput: typeof import('./src/components/keepalive/TextInput.vue')['default']
     Timer: typeof import('./src/components/keepalive/Timer.vue')['default']
     Todolist: typeof import('./src/components/todoReactive/Todolist.vue')['default']
+    Tree: typeof import('./src/components/tree/Tree.vue')['default']
     UserCard: typeof import('./src/components/user/UserCard.vue')['default']
   }
 }
