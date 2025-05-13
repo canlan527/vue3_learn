@@ -2,11 +2,14 @@
   <div id="app">
     <h1>树形组件示例</h1>
     <Tree :data="data" :has-checkbox="true"  />
+    <h1>自定义ref实现防抖</h1>
+    <Debounce/>
   </div>
 </template>
 
 <script setup>
 import Tree from '@/components/tree/Tree.vue';
+import Debounce from './debounce/Debounce.vue';
 import {ref} from 'vue'
 
 // 定义树形数据
