@@ -32,6 +32,9 @@ importers:
       vue-router:
         specifier: ^4.5.0
         version: 4.5.0(vue@3.4.38)
+      vue3-observe-visibility:
+        specifier: ^1.0.3
+        version: 1.0.3(vue@3.4.38)
     devDependencies:
       '@iconify-json/ep':
         specifier: ^1.2.2
@@ -1844,6 +1847,11 @@ packages:
     peerDependencies:
       vue: ^3.2.0
 
+  vue3-observe-visibility@1.0.3:
+    resolution: {integrity: sha512-dPXJu5NADzui/BwvAE2Vu5/dy+aX0UjRQC6hkLFSY5Da0BxCoPlOE/NkFNz3T+tRXAocey9HBOtaUwZOdWX2KQ==}
+    peerDependencies:
+      vue: ^3.x.x
+
   vue@3.4.38:
     resolution: {integrity: sha512-f0ZgN+mZ5KFgVv9wz0f4OgVKukoXtS3nwET4c2vLBGQR50aI8G0cqbFtLlX9Yiyg3LFGBitruPHt2PxwTduJEw==}
     peerDependencies:
@@ -3608,6 +3616,10 @@ snapshots:
   vue-router@4.5.0(vue@3.4.38):
     dependencies:
       '@vue/devtools-api': 6.6.4
+      vue: 3.4.38
+
+  vue3-observe-visibility@1.0.3(vue@3.4.38):
+    dependencies:
       vue: 3.4.38
 
   vue@3.4.38:

@@ -14,6 +14,7 @@ import router from '@/router'
 import App from './App.vue'
 import { createPinia } from 'pinia'
 import ErrorLogger from './views/errorLogger/error-logger'
+import { ObserveVisibility } from 'vue3-observe-visibility'
 const app = createApp(App)
 const pinia = createPinia()
 
@@ -43,5 +44,6 @@ app.use(ErrorLogger, {
   remoteLogging: true,
   remoteUrl: 'http://localhost:3003/log'
 })
+app.directive('observe-visibility', ObserveVisibility)
 app.mount('#app')
 
