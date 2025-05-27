@@ -44,7 +44,8 @@ const routerInfo = ref([
   { to: '/todoreactive', name: 'todoreactive', title: 'todoReactive' },
   { to: '/plugin', name: 'plugin', title: '插件展示' },
   { to: '/transition-pic', name: 'transition-pic', title: '图片轮播' },
-  { to: '/tree', name:'tree', title: 'tree组件' }
+  { to: '/tree', name:'tree', title: 'tree组件' },
+  { to: '/phantom-list', name:'phantom-list', title: '虚拟列表' },
 ])
 const router = useRouter()
 const route = useRoute()
@@ -52,11 +53,11 @@ const route = useRoute()
 const activeIndex = computed(() => route.path)
 
 const handleSelect = (key, keyPath) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
   router.push(key)
 }
 onMounted(() => {
-  console.log(route.path) // 输出 /
+  // console.log(route.path) // 输出 /
 })
 
 

@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ' VirtualList': typeof import('./src/components/virtualList/ VirtualList.vue')['default']
     AddTodo: typeof import('./src/components/todoReactive/AddTodo.vue')['default']
     Card: typeof import('./src/components/card/Card.vue')['default']
     Card2: typeof import('./src/components/card/Card2.vue')['default']
@@ -75,5 +76,6 @@ declare module 'vue' {
     Todolist: typeof import('./src/components/todoReactive/Todolist.vue')['default']
     Tree: typeof import('./src/components/tree/Tree.vue')['default']
     UserCard: typeof import('./src/components/user/UserCard.vue')['default']
+    VirtualList: typeof import('./src/components/virtualList/ VirtualList.vue')['default']
   }
 }

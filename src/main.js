@@ -7,7 +7,7 @@ import { createApp } from 'vue'
 
 // import './deepVue/数据拦截'
 // import './deepVue/02_响应式数据'
-import './deepVue/04_观察者模式1'
+// import './deepVue/04_观察者模式1'
 
 // 导入路由
 import router from '@/router'

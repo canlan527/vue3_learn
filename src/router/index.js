@@ -10,6 +10,7 @@ import TodoReactive from '@/views/TodoReactive.vue'
 import Plugin from '@/views/errorLogger/showPlugin.vue'
 import TransitionPic from '@/views/transitionPic/TransitionPic.vue'
 import Tree from '@/views/tree/Tree.vue'
+import PhantomList from '@/views/phantomList/PhantomList.vue'
 
 // 创建路由实例，并传入配置对象
 const router = createRouter({
@@ -57,6 +58,9 @@ const router = createRouter({
   }, {
     path: '/tree',
     component: Tree
+  },{
+    path: '/phantom-list',
+    component: PhantomList
   }
   ]
 })
