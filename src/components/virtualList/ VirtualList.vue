@@ -83,9 +83,35 @@ const visibleData = computed(() => {
 // const getTransformStyle = computed(() => ({transform: `translate3d(0, ${startOffset.value}px ,0)`}))
 // const itemHeightStyle = computed(() => ({height: `${itemHeight}px`, lineHeight: `${itemHeight}px`}))
 
+// const getStartIndex = (scrollTop) => {
+//   const item = positions.find((i) => (i && i.bottom > scrollTop))
+//   return item.index
+// }
+// 二分查找
+const binarySearch = (list, value) => {
+  let start = 0;
+  let end = list.length - 1;
+  let tempIndex = null;
+
+  while(start <= end) {
+    let midIndex = parseInt((start + end) / 2)
+    let midValue = list[midIndex].bottom
+    if(midValue === value) {
+      return midIndex+1
+    } else if (midValue < value) {
+      start = midIndex+1
+    } else if(midValue > value) {
+      if(tempIndex === null || tempIndex > midIndex) {
+        tempIndex = midIndex
+      }
+      end = end - 1;
+    }
+  }
+  return tempIndex
+}
+
 const getStartIndex = (scrollTop) => {
-  const item = positions.find((i) => (i && i.bottom > scrollTop))
-  return item.index
+  return binarySearch(positions, scrollTop)
 }
 
 // 滚动事件处理函数
