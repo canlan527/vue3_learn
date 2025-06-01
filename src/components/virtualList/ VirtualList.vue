@@ -1,5 +1,5 @@
 <template>
-  <div class="infinite-list-container" ref="list" @scroll="handleScroll">
+  <div class="infinite-list-container" ref="list">
     <!-- 列表总高度，目的是为了形成滚动 -->
     <div class="infinite-list-phantom" ref="listHeight">
       <!-- 可视区域，里面是列表项 -->
@@ -51,6 +51,8 @@ const items = ref([])
 const listHeight = ref(null)
 // infinite-list 元素的引用
 const content = ref(null)
+// 存储 IntersectionObserver 实例
+const observer = ref(null)
 
 // 缓存列表，用于存储列表项的位置信息
 let positions = []
@@ -93,15 +95,15 @@ const binarySearch = (list, value) => {
   let end = list.length - 1;
   let tempIndex = null;
 
-  while(start <= end) {
+  while (start <= end) {
     let midIndex = parseInt((start + end) / 2)
     let midValue = list[midIndex].bottom
-    if(midValue === value) {
-      return midIndex+1
+    if (midValue === value) {
+      return midIndex + 1
     } else if (midValue < value) {
-      start = midIndex+1
-    } else if(midValue > value) {
-      if(tempIndex === null || tempIndex > midIndex) {
+      start = midIndex + 1
+    } else if (midValue > value) {
+      if (tempIndex === null || tempIndex > midIndex) {
         tempIndex = midIndex
       }
       end = end - 1;
@@ -121,6 +123,31 @@ const handleScroll = () => {
   startIndex.value = getStartIndex(scrollTop)
   endIndex.value = startIndex.value + visibleCount.value
   // startOffset.value = scrollTop - (scrollTop % itemHeight)
+}
+
+// 创建IntersectionObserver实例
+const createObserver = () => {
+  observer.value = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // 说明列表进入可视区域
+        let scrollTop = list.value.scrollTop
+        startIndex.value = getStartIndex(scrollTop)
+        endIndex.value = startIndex.value + visibleCount.value
+        setStartOffset()
+      }
+    })
+  }, {
+    root: list.value, // 设置观察的根元素为列表容器
+    rootMargin: '0px', // 设置根元素的边距
+    threshold: 0.1 // 阈值
+  })
+}
+// 观察列表项
+const observeItems = () => {
+  items.value.forEach((item) => {
+    observer.value.observe(item)
+  })
 }
 
 const updateItemSize = () => {
@@ -163,7 +190,7 @@ const setStartOffset = () => {
 
     // 计算 startOffset: 用当前可视区域第一项的前一项的底部位置，减去上面的size，
     // 这个 size 表示的是在考虑缓冲区后需要额外平移的偏移量
-    startOffset = positions[startIndex.value-1].bottom - size
+    startOffset = positions[startIndex.value - 1].bottom - size
   } else {
     startOffset = 0
   }
@@ -178,6 +205,8 @@ onMounted(() => {
   endIndex.value = startIndex.value + visibleCount.value
   // 初始化列表信息
   initPositions()
+  // 创建 IntersectionObserver实例
+  createObserver()
 })
 
 onUpdated(() => {
@@ -189,7 +218,8 @@ onUpdated(() => {
     listHeight.value.style.height = `${positions[positions.length - 1].bottom}px`
     // 3.更新列表偏移量 
     setStartOffset()
-
+    // 4.观测列表项移动
+    observeItems()
   })
 })
 
